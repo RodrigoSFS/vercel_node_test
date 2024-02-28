@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+
+  <div class="blogs content">
+    <h2>All Blogs</h2>
+
+    <!-- Check if the lengh of the 'blogs object is over zero' -->
+
+    <% if (blogs.length> 0){ %>
+    <% blogs.forEach(blog=> { %>
+
+    <h3 class="title">
+      <%= blog.title %>
+    </h3>
+    <p class="snippet">
+      <%= blog.snippet %>
+    </p>
+
+    <% }) %>
+    <% } else { %>
+    <p>Sorry, there's no blogs...</p>
+    <% } %>
+
+    <!-- The name of this process is "Server side rendering", EJS Templates are processed through the EJS view engine on the server, it looks to find any EJS tag, pas through the
+    EJS view engine, and returns a valid HTML page based on the template we wrote, with the returning data. -->
+
+
+  </div>
+
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+It is possible to run JavaScript on the Browser because of the V8 Engine that runs on it.
+The V8 Engine takes the JavaScript code and compile down to Machine code (NodeJs is written in C++).
+With NodeJs we can run JavaScript code in computer or server.
+
+-------------------------
+The Role of Node.Js
+The Client-Server Architecture.
+
+The Node server is running JavaScript on the Back-End to deal with the requests made by the Client.
+
+A Bonus for using node is that we can utilize the same code from Front-End on the Back-End and vice versa.
+
