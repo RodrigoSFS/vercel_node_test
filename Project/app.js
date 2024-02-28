@@ -43,66 +43,68 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(morgan('dev'));
 
-// mongoose and mongo sandbox routes
-// Handler to create a blog when a GET request is made to the specified route.
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'new blog2',
-        snippet: 'about my new blog',
-        body: 'more about my new blog'
-    });
+// // mongoose and mongo sandbox routes
+// // Handler to create a blog when a GET request is made to the specified route.
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'new blog2',
+//         snippet: 'about my new blog',
+//         body: 'more about my new blog'
+//     });
 
-    // When we're saiving, we use the save() function on a instance of Blog.
-    // Those functions of save, find, findById are asyncronous functions, it takes some time, so it's we put the then() and catch() functions for the applictacion to wait until
-    // it is completely done.
-    blog.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+//     // When we're saiving, we use the save() function on a instance of Blog.
+//     // Those functions of save, find, findById are asyncronous functions, it takes some time, so it's we put the then() and catch() functions for the applictacion to wait until
+//     // it is completely done.
+//     blog.save()
+//         .then((result) => {
+//             res.send(result);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
 
-// Handler to send to the browser all blogs when a GET request is made to the specified route.
-app.get('/all-blogs', (req, res) => {
-    // When we're searching, we use the find() function on the Blog itself.
-    Blog.find()
-        .then((result) =>{
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-})
+// // Handler to send to the browser all blogs when a GET request is made to the specified route.
+// app.get('/all-blogs', (req, res) => {
+//     // When we're searching, we use the find() function on the Blog itself.
+//     Blog.find()
+//         .then((result) =>{
+//             res.send(result);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// })
 
-// Handler to send a single blog to the browser when a GET request is made to the specified route.
-app.get('/single-blog', (req, res) => {
-    Blog.findById('65df7b6f5b345a796eba0ae0')
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-})
+// // Handler to send a single blog to the browser when a GET request is made to the specified route.
+// app.get('/single-blog', (req, res) => {
+//     Blog.findById('65df7b6f5b345a796eba0ae0')
+//         .then((result) => {
+//             res.send(result);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// })
 
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Bla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
-        {title: 'Blabla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
-        {title: 'Blablabla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
+    // const blogs = [
+    //     {title: 'Bla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
+    //     {title: 'Blabla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
+    //     {title: 'Blablabla', snippet: 'Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium Loren Ipsium'},
 
-    ];
-    // it altomaticly sets the content type and the status code.
-    //res.send('<p> Home page </p>');
+    // ];
+    // // it altomaticly sets the content type and the status code.
+    // //res.send('<p> Home page </p>');
 
-    // the first parameter asks for a abolute path of the file from the root of the computer to the file itself,
-    // so we put the relative path as the first argumetn and set the root on the second, using the node command that express what the path to the folder that you're in.
-    // res.sendFile('./views/index.html', { root: __dirname });
+    // // the first parameter asks for a abolute path of the file from the root of the computer to the file itself,
+    // // so we put the relative path as the first argumetn and set the root on the second, using the node command that express what the path to the folder that you're in.
+    // // res.sendFile('./views/index.html', { root: __dirname });
     
-    // We no longer want to send a static HTML file, we want to send a View.
-    res.render('index', { title: 'Home', blogs: blogs});
+    // // We no longer want to send a static HTML file, we want to send a View.
+    // res.render('index', { title: 'Home', blogs: blogs});
+
+    res.redirect('/blogs');
 
 });
 
@@ -110,6 +112,17 @@ app.get('/about', (req, res) => {
     // res.sendFile('/views/about.html', { root: __dirname });
     res.render('about', { title: 'About'})
 });
+
+// blog routes
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+    .then((result) => {
+        res.render('index', { title: 'All Blogs', blogs: result });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create'});
