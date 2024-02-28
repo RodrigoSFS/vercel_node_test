@@ -41,6 +41,8 @@ app.set('view engine', 'ejs');
 
 // Middeware and static files
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true })); // That takes all of the data which is passed and put it on the request object. We're accessing the Body of the HTTP request 
+//                                                  (all of the data). Without that line of code we don't have acess the the contents of the body of the request (Undefined).
 app.use(morgan('dev'));
 
 // // mongoose and mongo sandbox routes
@@ -124,6 +126,22 @@ app.get('/blogs', (req, res) => {
     });
 })
 
+// POST handler
+app.post('/blogs', (req, res) => {
+    // In order to get the data which is submitted no the form we need some middleware. We'll use the one which comes with express.
+    // console.log(req.body);
+
+    const blog = new Blog(req.body); // The body of the POST request is a JSON with the key value pairs that are specified as the atributes for our blog object!
+
+    blog.save()
+        .then((result) => {
+            res.redirect('/blogs');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
+
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create'});
 });
@@ -147,3 +165,28 @@ app.use((req, res) => {
 SQL databases stores data in Tables, Rows and Columns to store records of data and makes relations between them.
 NoSQL databases use collections and documents.
 */ 
+
+// Request Types
+/*
+GET requests to get a resource.
+
+POST requests to create new data.
+
+DELETE requests to delete data.
+
+PUT requests to update data.
+
+We CAN use the same routes for different kinds of requests.
+We have /blogs which is requested with a GET request.
+We also have /blogs/create, which also is requested witha a GET request.
+And we'll have a /blogs rounte which is interacted with a POST request, to create a blog.
+We'll also have a /blogs/:id, "id" being a variable responsible to represent the id of a specific blog, enabling us to GET a specific blog with a GET request.
+We'll have /blogs/:id again but with a DELETE request, to delete a specific blog with its id.
+And a /blogs/:id, also, but with a PUT request, to UPDATE a blog with of a specific id.
+
+And that's the route structure of a simple CRUDE application.
+
+To make a POST Request when we click on the "Submit" button on the end of our Form on /blog/create, we could use the Fetch API or another asyncronous library for JavaScript,
+or we cando it directly on the form itself. That's what we're gonna do.
+
+*/
