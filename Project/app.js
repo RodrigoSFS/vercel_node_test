@@ -2,7 +2,6 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Blog = require('./models/blog');
-const { result } = require('lodash');
 
 // express app
 const app = express();
@@ -41,8 +40,8 @@ app.set('view engine', 'ejs');
 
 // Middeware and static files
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true })); // That takes all of the data which is passed and put it on the request object. We're accessing the Body of the HTTP request 
-//                                                  (all of the data). Without that line of code we don't have acess the the contents of the body of the request (Undefined).
+app.use(express.urlencoded({ extended: true })); // That takes all of the URL encodded data which is passed and put it on the request object. We're accessing the Body of the HTTP  
+//                                               request  (all of the data). Without that line of code we don't have acess the the contents of the body of the request (Undefined).
 app.use(morgan('dev'));
 
 // // mongoose and mongo sandbox routes
@@ -120,6 +119,7 @@ app.get('/blogs', (req, res) => {
     Blog.find().sort({ createdAt: -1 })
     .then((result) => {
         res.render('index', { title: 'All Blogs', blogs: result });
+        // console.log(result);
     })
     .catch((err) => {
         console.log(err);
@@ -136,6 +136,7 @@ app.post('/blogs', (req, res) => {
     blog.save()
         .then((result) => {
             res.redirect('/blogs');
+            // console.log(result);
         })
         .catch((err) => {
             console.log(err);
@@ -145,6 +146,20 @@ app.post('/blogs', (req, res) => {
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create'});
 });
+
+// Route parameters. On 
+app.get('/blogs/:id', (req,res) => {
+    const id = req.params.id;
+
+    Blog.findById(id)
+        .then((result) => {
+            res.render('details', { title: 'Blog details', blog: result});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+})
 
 // // redirect
 // app.get('/about-us', (req, res) => {
