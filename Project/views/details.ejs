@@ -11,10 +11,33 @@
     <div class="content">
       <p><%= blog.body %></p>
     </div>
-    <a href="delete" data-doc="<%= blog._id %>">Delete</a>
+    <a class="delete" data-doc="<%= blog._id %>">Delete</a>
   </div>
 
   <%- include('./partials/footer.ejs') %>
+
+  <script>
+    const trashcan = document.querySelector('a.delete');
+
+    trashcan.addEventListener('click', (e) => {
+      const endpoint = `/blogs/${trashcan.dataset.doc}`;
+
+      // this is a ajax request, and what will do is described on app.js
+      // When we receive our data back, the JSON with the redirect property(A URL to redirect for), we'll read it and then redirect. We're doing that on the front-end
+      // we can't do it on the back end because this is a ajax request.
+      fetch(endpoint, {
+          method: 'DELETE'
+        })
+        .then((response) => response.json())
+        // .then((data) => console.log(data)) show on the browser console.
+        .then((data) => window.location.href = data.redirect)
+        .catch(err => {
+          console.log(err);
+        })
+
+    });
+  </script>
+
 </body>
 
 </html>

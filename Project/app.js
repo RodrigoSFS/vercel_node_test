@@ -159,7 +159,21 @@ app.get('/blogs/:id', (req,res) => {
             console.log(err);
         });
 
-})
+});
+
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+
+    Blog.findByIdAndDelete(id)
+        .then(result => {
+            // this is a ajax request, so we cant' redirect. We have to send back a JSON or text data back to the browser.
+            // So what that next line does is send a JSON with a redirect property. Look into details.ejs for further explanation of what happens next.
+            res.json({ redirect: '/blogs' });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
 
 // // redirect
 // app.get('/about-us', (req, res) => {
