@@ -4,7 +4,20 @@ const Blog = require('../models/blog');
 const router = express.Router();
 
 // blog routes
-router.get('/blogs', (req, res) => {
+// router.get('/blogs', (req, res) => {
+//     Blog.find().sort({ createdAt: -1 })
+//     .then((result) => {
+//         res.render('index', { title: 'All Blogs', blogs: result });
+//         // console.log(result);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
+// })
+
+// Since we're separating the routers, the first argument of it don't need to bee put on both files, if it is, it'll stack on each other, like /blogs/blogs. so we don't need 
+// to put it in here anymore, just a simple "/", the blogs will be put on the app.use('/blogs', blogRoutes);
+router.get('/', (req, res) => {
     Blog.find().sort({ createdAt: -1 })
     .then((result) => {
         res.render('index', { title: 'All Blogs', blogs: result });
@@ -16,7 +29,7 @@ router.get('/blogs', (req, res) => {
 })
 
 // POST handler
-router.post('/blogs', (req, res) => {
+router.post('/', (req, res) => {
     // In order to get the data which is submitted no the form we need some middleware. We'll use the one which comes with express.
     // console.log(req.body);
 
@@ -32,12 +45,12 @@ router.post('/blogs', (req, res) => {
         });
 })
 
-router.get('/blogs/create', (req, res) => {
+router.get('/create', (req, res) => {
     res.render('create', { title: 'Create'});
 });
 
 // Route parameters. On 
-router.get('/blogs/:id', (req,res) => {
+router.get('/:id', (req,res) => {
     const id = req.params.id;
 
     Blog.findById(id)
@@ -50,7 +63,7 @@ router.get('/blogs/:id', (req,res) => {
 
 });
 
-router.delete('/blogs/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     const id = req.params.id;
 
     Blog.findByIdAndDelete(id)
