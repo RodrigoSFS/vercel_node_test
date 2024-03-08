@@ -10,3 +10,5 @@ Mongoose to interact with the Mongodb.
 Morgan for some Middlewares.
 
 It is a study repository, so it has a lot of commented code showing the different ways to make something, at first with raw NodeJs, afterward with all the facilities above.
+
+"npm install" is recommended for the dependencies.
