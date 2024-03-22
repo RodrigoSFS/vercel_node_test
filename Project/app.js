@@ -16,6 +16,8 @@ mongoose.connect(dbURI)
 // register view engine
 // the view module
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 //app.set('views', 'myviews');
 
 // listen for requests
