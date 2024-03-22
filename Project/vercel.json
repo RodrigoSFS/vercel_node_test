@@ -1,18 +1,15 @@
 {
     "version": 2,
     "builds": [
-        { "src": "app.js", "use": "@vercel/node" }
+        {
+            "src": "app.js",
+            "use": "@vercel/node"
+        }
     ],
     "routes": [
-        { "src": "/blogs/(.*)", "dest": "/app.js" },
-        { "src": "/(.*)", "dest": "/app.js" }
-    ],
-    "env": {
-        "MONGODB_URI": "mongodb+srv://nemo29339:1234@nodetuts.lsdczcs.mongodb.net/nodetuts?retryWrites=true&w=majority"
-    },
-    "functions": {
-        "app.js": {
-            "maxDuration": 30
+        {
+            "src": "(.*)",
+            "dest": "app.js"
         }
-    }
+    ]
 }
