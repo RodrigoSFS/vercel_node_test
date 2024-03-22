@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const path = require('path');
 // const Blog = require('./models/blog');
 const blogRoutes = require('./routes/blogRoutes')
 
